@@ -4,7 +4,7 @@ import { TaskModel } from './task.model';
 @Injectable()
 export class TaskService {
   findTaskById(id: number) {
-      throw new Error('Method not implemented.');
+    return this._tasks.find((task) => task.id === id);
   }
   _tasks: TaskModel[] = [
     { id: 1, description: 'Find a kitten' },
@@ -13,6 +13,13 @@ export class TaskService {
   ];
 
   findAllTasks(): TaskModel[] {
+    return this._tasks;
+  }
+
+  //create a task
+  async createTask(task: TaskModel): Promise<TaskModel[]> {
+    //append the task to _tasks array
+    this._tasks.push(task);
     return this._tasks;
   }
 }

@@ -1,4 +1,12 @@
-import { Controller, Get, NotFoundException, NotImplementedException, Param } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  Post,
+} from '@nestjs/common';
+import { TaskModel } from './task.model';
 import { TaskService } from './task.service';
 
 @Controller('tasks')
@@ -12,11 +20,16 @@ export class TasksController {
 
   @Get(':taskId')
   getTaskById(@Param('taskId') id: number) {
-    let task = this.taskService.findTaskById(id);
+    const task = this.taskService.findTaskById(id);
+    if (!task) {
+      throw new NotFoundException('Task with Id ${id}not found');
+    }
+    return task;
+  }
 
+  @Post('create')
+  //adding a task
+  createTask(@Body() task: TaskModel) {
+    return this.taskService.createTask(task);
   }
-  if (!task) {
-    throw new NotFoundException('Task with Id ${id}not found');
-  }
-  return task;
 }
